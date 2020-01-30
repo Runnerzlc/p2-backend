@@ -148,12 +148,12 @@ router.get('/users/:pageNo/',(req,res) => {
     query.limit = size
     // Find some documents
     if (regex !== undefined) {
-        User.countDocuments({$or:{name: regex},function(err,totalCount) {
+        User.countDocuments({$or:[{name: regex}, {LastName: regex}, {Sex: regex}]},function(err,totalCount) {
             if(err) {
                 response = {"error" : true,"message" : "Error fetching data"}
             }
             User
-                .find({$or:{name: regex}},{},query)
+                .find({$or:[{FirstName: regex}, {LastName: regex}, {Sex: regex}]},{},query)
                 .sort(req.query.sort)
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
