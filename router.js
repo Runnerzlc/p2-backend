@@ -26,35 +26,23 @@ router.post('/user', (req, res) => {
         user.phone = req.body.phone;
         user.email = req.body.email;
         user.suprerior = req.body.suprerior;
-        // User.findById(req.params.id, (err, user) => {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     user.ds = req.body.suprerior;
-        //     user.save(  err => {
-        //         if (err) {
-        //             res.status(501).send(err);
-        //         };
-        //         res.status(200).json({ message: 'user edit!' });
-        //     });
-        // });
-
-        user.save(  (err, usera) => {
+        
+        console.log(user._id)
+        user.save(  (err) => {
             if (err) {
                 res.status(501).send(err);
             };
-            //var userId = user._id
-            User.findOneAndUpdate({_id: user.suprerior}, {$push: {ds: usera._id}
-            },err =>{
-                if (err) {
-                    res.status(501).send(err);
-                }
-            }
-            );
-            console.log(usera._id)
+           
             res.status(200).json({ message: 'user created!' });
         });
-        //User.findOneAndUpdate({_id: req.body.suprerior}, {$push: {ds: userId}});
+        User.findByIdAndUpdate(user.suprerior, { $push: { subordinates: user._id } 
+        },(err) => {
+            if (err) {
+                res.status(501).send(err);
+            }}
+         )
+    
+        console.log("requst create user")
     });
 // get all users
 router.get('/users', (req, res) => {
@@ -90,18 +78,18 @@ router.put('/user/:id', (req, res) => {
             user.startDate = req.body.startDate;
             user.phone = req.body.phone;
             user.email = req.body.email;
-            User.updateOne({ _id: user.suprerior}, { $pull: { ds: user._id }})
+            User.findByIdAndUpdate( user.suprerior, { $pull: { subordinates: req.params.id}})
             user.suprerior = req.body.suprerior;
             
-            user.save(  (err, user) => {
+            user.save(  (err) => {
                 if (err) {
                     res.status(501).send(err);
                 };
-                User.findOneAndUpdate({_id: req.body.suprerior}, {$push: {ds: user._id}});
+                //User.findByIdAndUpdate( req.body.suprerior, {$push: {subordinates: user._id}});
                 res.status(200).json({ message: 'user edit!' });
             });
 
-            User.findOneAndUpdate({_id: req.body.suprerior}, {$push: {ds: req.body,_id}});
+            User.findByIdAndUpdate(req.body.suprerior, { $push: { subordinates: req.params.id } } );
 
         });
         console.log("request edit user")

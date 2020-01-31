@@ -1,7 +1,7 @@
 const fs = require(`fs`);
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-mongoose.set('useFindAndModify', false);
+//mongoose.set('useFindAndModify', false);
 
 const userSchema = new Schema({
     avatar : { data: Buffer, contentType: String },//<Binary Data>
@@ -11,8 +11,8 @@ const userSchema = new Schema({
     startDate: { type: Date, default: Date.now },
     phone : Number,
     email : String,
-    suprerior : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    ds : [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    suprerior : [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    subordinates  : [{ type: Schema.Types.ObjectId, ref: 'User' }],
 })
 
 module.exports = mongoose.model('User', userSchema);
