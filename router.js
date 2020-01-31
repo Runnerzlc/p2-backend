@@ -78,9 +78,14 @@ router.put('/user/:id', (req, res) => {
             user.startDate = req.body.startDate;
             user.phone = req.body.phone;
             user.email = req.body.email;
-            User.findByIdAndUpdate( user.suprerior, { $pull: { subordinates: req.params.id}})
+            User.findByIdAndUpdate( user.suprerior, { $pull: { subordinates: req.params.id}
+            }   ,(err) => {
+                if (err) {
+                    res.status(501).send(err);
+                }}
+             )
             user.suprerior = req.body.suprerior;
-            
+            console.log(req.params.id);
             user.save(  (err) => {
                 if (err) {
                     res.status(501).send(err);
@@ -89,7 +94,12 @@ router.put('/user/:id', (req, res) => {
                 res.status(200).json({ message: 'user edit!' });
             });
 
-            User.findByIdAndUpdate(req.body.suprerior, { $push: { subordinates: req.params.id } } );
+            User.findByIdAndUpdate(user.suprerior, { $push: { subordinates: req.params.id }
+            },(err) => {
+                if (err) {
+                    res.status(501).send(err);
+                }}
+             )
 
         });
         console.log("request edit user")
@@ -101,9 +111,15 @@ router.delete('/user/:id', (req, res) => {
             if (err) {
                 res.send(err);
             }
-            User.updateOne({ _id: user.suprerior}, { $pull: { ds: user._id }});
+            //User.findByIdAndUpdate({ _id: user.suprerior}, { $pull: { ds: user._id }});
             
         });
+        User.findByIdAndUpdate({ _id: user.suprerior}, { $pull: { ds: user._id }
+        },(err) => {
+            if (err) {
+                res.status(501).send(err);
+            }}
+         )
         User.deleteOne({
             _id: req.params.id, 
         }, (err, user) => {
