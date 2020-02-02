@@ -11,7 +11,7 @@ const userSchema = new Schema({
     startDate: { type: Date, default: Date.now },
     phone : Number,
     email : String,
-    suprerior : [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    suprerior : { type: Schema.Types.ObjectId, ref: 'User' },
     subordinates  : [{ type: Schema.Types.ObjectId, ref: 'User' }],
 })
 

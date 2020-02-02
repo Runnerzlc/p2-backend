@@ -112,12 +112,12 @@ router.delete('/user/:id', (req, res) => {
                 res.send(err);
             }
             //user._id = req.params.id
-            User.findByIdAndUpdate(user.suprerior, { $pull: { subordinates: user._id }})
-            // ,(err) => {
-            //     if (err) {
-            //         res.status(501).send(err);
-            //     }}
-            //  )
+            User.findByIdAndUpdate(user.suprerior, { $pull: { subordinates: user._id }
+            },(err) => {
+                if (err) {
+                    res.status(501).send(err);
+                }}
+             )
         
         });
         User.deleteOne({

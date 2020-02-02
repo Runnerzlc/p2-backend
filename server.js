@@ -11,6 +11,7 @@ const app        = express();
 const router = require('./router');
 
 const mongoose   = require('mongoose');
+mongoose.connect('url_here');
 mongoose.connect("mongodb+srv://admin:1111@cluster0-tmddm.mongodb.net/test?retryWrites=true&w=majority" ,
 //"mongodb+srv://admin:1111@cluster0-tmddm.mongodb.net/test?retryWrites=true&w=majority
     { useNewUrlParser: true }, (err) => {
@@ -64,8 +65,8 @@ app.listen(port, () => {
                 console.log('hello' + port)}
 );
 
-// app.use(multer({ dest: './uploads/',
-//     rename: function (fieldname, filename) {
-//       return filename;
-//     },
-//    }));
+app.use(multer({ dest: './upload',
+    rename: function (fieldname, filename) {
+      return filename;
+    },
+}).any());
