@@ -14,11 +14,11 @@ const mongoose   = require('mongoose');
 mongoose.connect('url_here');
 mongoose.connect("mongodb+srv://admin:1111@cluster0-tmddm.mongodb.net/test?retryWrites=true&w=majority" ,
 //"mongodb+srv://admin:1111@cluster0-tmddm.mongodb.net/test?retryWrites=true&w=majority
-    { useNewUrlParser: true }, (err) => {
+{ useNewUrlParser: true }, (err) => {
     if (err) {
         console.log("Error");
     }
-    })
+    });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));   
