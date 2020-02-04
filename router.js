@@ -50,6 +50,7 @@ router.get('/users', (req, res) => {
             if (err) {
                 res.status(500).send(err);
             }
+            //users.suprerior = User.findById( users.suprerior,`name`),exec(callback);
             res.status(200).json(users);
         });
         console.log("request get all users");
