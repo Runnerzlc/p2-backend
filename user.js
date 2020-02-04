@@ -8,7 +8,7 @@ const userSchema = new Schema({
     name : String,
     rank : String,
     gender : String,
-    startDate: { type: Date, default: Date.now },
+    startDate: String,
     phone : Number,
     email : String,
     suprerior : { type: Schema.Types.ObjectId, ref: 'User' },
