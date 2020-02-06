@@ -58,7 +58,7 @@ router.get('/users', (req, res) => {
             }
             //users.suprerior = User.findById( users.suprerior,`name`),exec(callback);
             res.status(200).json(users);
-            console.log("get work5e38cada5094080eff8b3d9b")
+            //console.log("get work",users)
             //console.log("superior name: ", user.superior.name)
         });
         console.log("request get all users");
