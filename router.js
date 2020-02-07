@@ -44,7 +44,7 @@ router.post('/user', (req, res) => {
         User
         .findById(user._id)
         .populate('superior')
-        console.log("superior name", user.superior.name)
+       // console.log("superior name", user.superior.name)
         console.log("requst create user")
     });
 // get all users
@@ -159,13 +159,14 @@ router.delete('/user/:id', (req, res) => {
                 res.send(err);
             }
             //user._id = req.params.id
-            User.findByIdAndUpdate(user.superior, { $pull: { subordinates: user._id }
-            },(err) => {
-                if (err) {
-                    res.status(501).send(err);
-                }}
-             )
-        
+            if (user.superior !== ''){
+                User.findByIdAndUpdate(user.superior, { $pull: { subordinates: user._id }
+                },(err) => {
+                    if (err) {
+                        res.status(501).send(err);
+                    }}
+                )
+            }
         });
         User.deleteOne({
             _id: req.params.id, 
