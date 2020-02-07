@@ -63,16 +63,45 @@ router.get('/users', (req, res) => {
         });
         console.log("request get all users");
     });
-
-router.get('/userSup/:id', (req, res) => {
-        User.findById(req.params.id, (err, user) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(user);
-        });
-        console.log("get one user");
-    });
+// get all superior
+router.get('/usersup/:id', (req, res) => {
+    const _id  = req.params.id
+    console.log("id test", _id)
+	// when we add a new army
+	if (_id === '') {
+		User
+			.find()
+			.select('name')
+			.exec((err, user) => {
+				if (err) {
+					console.log(err);
+					res.status(500).json(err);
+				}
+				else {
+					res.status(200).json(user);
+				}
+			});
+	}
+	// when we edit a existed army
+	else {
+		User
+			.findById(_id)
+			.populate('subordinates')
+			.exec((err, user) => {
+				if (err) {
+					console.log(err);
+					res.status(500).json(err);
+				}
+				else {
+                    console.log("id test", _id)
+					let unValid = [{ '_id': user._id, 'name': user.name }];
+					let traArray = user.subordinates;
+					findValidSup(unValid, traArray, res);
+				}
+			});
+	}
+});
+// get one user
 router.get('/user/:id', (req, res) => {
         User.findById(req.params.id, (err, user) => {
             if (err) {
@@ -213,29 +242,46 @@ router.get('/users/:pageNo/',(req,res) => {
     }
 });
 
-// function BFS(g, s) {
-//     let queue = []; //辅助队列 Q
-//     s.color = s.GRAY; //首次发现s涂为灰色
-//     s.d = 0; //距离为0
-//     queue.push(s); //将s放入队列 Q
-//     while (queue.length > 0) { //当队列Q中有顶点时执行搜索
-//         let u = queue.shift(); //将Q中的第一个元素移出
-//         if (u.edges == null) continue; //如果从当前顶点没有发出边
-//         let sibling = u.edges; //获取表示邻接边的链表的头节点
-//         while (sibling != null) { //当链表不为空
-//             let index = sibling.index; //当前边所连接的顶点在队列中的位置
-//             let n = g.getNode(index); //获取顶点
-//             if (n.color == n.WHITE) { //如果没有被访问过
-//                 n.color = n.GRAY; //涂为灰色
-//                 n.d = u.d + 1; //距离加1
-//                 n.pi = u; //设置前驱节点
-//                 queue.push(n); //将 n 放入队列 Q
-//             }
-//             sibling = sibling.sibling; //下一条边
-//         }
-//         u.color = u.BLACK; //当前顶点访问结束 涂为黑色
-//     }
-// }
+const findValidSup = (unValid, traArray, res) => {
+	if (traArray.length > 0) {
+		let currentId = traArray.shift();
+		User
+			.findById(currentId)
+			.populate('subordinates')
+			.exec((err, result) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				else {
+					unValid.push({ '_id': result._id, 'name': result.name });
+					traArray = [...traArray, ...result.subordinates];
+					findValidSup(unValid, traArray, res);
+				}
+			});
+	}
+	else {
+		User
+			.find()
+			.select('name')
+			.exec((err, user) => {
+				let validSup = user.filter(user => {
+					let isValid = true;
+					for (let i = 0; i < unValid.length; i++) {
+						if (JSON.stringify(unValid[i]) === JSON.stringify(user)) {
+							console.log("hello");
+							isValid = false;
+							break;
+						}
+					}
+					return isValid;
+				});
+				console.log(validSup);
+				res.status(200).json(validSup);
+			});
+	}
+}
+
 
 module.exports = router;
 
