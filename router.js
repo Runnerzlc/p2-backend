@@ -17,8 +17,8 @@ router.get('/', (req, res) => {
 //create user
 router.post('/user', (req, res) => {
         var user = new User();
-        // user.avatar.data = fs.readFileSync(req.files.userPhoto.path);
-        // user.avatar.contentType = `image/png`;      
+        //user.avatarUrl.data = fs.readFileSync(req.files.userPhoto.path);
+        //user.avatarUrl.contentType = `image/png`;      
         user.name = req.body.name;
         user.rank = req.body.rank;   
         user.gender = req.body.gender;
@@ -145,8 +145,10 @@ router.put('/user/:id', (req, res) => {
             },(err) => {
                 if (err) {
                     res.status(501).send(err);
-                }}
-             )
+                };
+                // res.status(200).json({ message: 'superior subordinates edit' });
+                console.log('superior subordinates edit');
+            });
 
         });
         console.log("request edit user")

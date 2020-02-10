@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 //mongoose.set('useFindAndModify', false);
 
 const userSchema = new Schema({
-    avatar : { data: Buffer, contentType: String },//<Binary Data>
+    avatarUrl : { data: Buffer, contentType: String },//<Binary Data>
     name : String,
     rank : String,
     gender : String,
