@@ -18,8 +18,8 @@ router.get('/', (req, res) => {
 router.post('/user', (req, res) => {
         //let path = Upload(req.body.avatarUrl);
         var user = new User();
-        user.avatarUrl.data = req.body.avatarUrl
-        user.avatarUrl.contentType = `image/png`;      
+        user.avatarUrl= req.body.avatarUrl
+        //user.avatarUrl.contentType = `image/png`;      
         user.name = req.body.name;
         user.rank = req.body.rank;   
         user.gender = req.body.gender;
@@ -28,7 +28,7 @@ router.post('/user', (req, res) => {
         user.email = req.body.email;
         user.superior = req.body.superior;
         
-        console.log("body content",req.body)
+        console.log("body content",req.body.avatarUrl)
         console.log("image content",req.body.avatarUrl)
         console.log("name content",req.body.name)
         user.save(  (err) => {
@@ -121,7 +121,8 @@ router.put('/user/:id', (req, res) => {
                 res.send(err);
             }
             // user.avatar.data = fs.readFileSync(req.files.userPhoto.path);
-            // user.avatar.contentType = `image/png`;      
+            // user.avatar.contentType = `image/png`; 
+            user.avatarUrl= req.body.avatarUrl     
             user.name = req.body.name;
             user.rank = req.body.rank;   
             user.gender = req.body.gender;
@@ -164,7 +165,7 @@ router.delete('/user/:id', (req, res) => {
                 res.send(err);
             }
             //user._id = req.params.id
-            if (user.superior !== ''){
+            if (user.superior !== ""){
                 User.findByIdAndUpdate(user.superior, { $pull: { subordinates: user._id }
                 },(err) => {
                     if (err) {
