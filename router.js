@@ -165,7 +165,7 @@ router.delete('/user/:id', (req, res) => {
                 res.send(err);
             }
             //user._id = req.params.id
-            if (user.superior !== ""){
+            if (user.superior !== undefined){
                 User.findByIdAndUpdate(user.superior, { $pull: { subordinates: user._id }
                 },(err) => {
                     if (err) {
@@ -194,9 +194,10 @@ router.delete('/user/:id', (req, res) => {
 router.get('/users/:pageNo/',(req,res) => {
     var pageNo = parseInt(req.params.pageNo)
     var size = 5;
-    var query = {}
-    if (req.query.keyword) {
-        var regex = new RegExp(req.query.keyword)
+    var query = {};
+    var response = {};
+    if (req.query.search) {
+        var regex = new RegExp(req.query.search)
     };
     if(pageNo < 0 || pageNo === 0) {
             response = {"error" : true,"message" : "invalid page number, should start with 1"};
@@ -232,7 +233,7 @@ router.get('/users/:pageNo/',(req,res) => {
             }
             User
                 .find({},{},query)
-                .sort(req.query.sort)
+                //.sort(req.query.sort)
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
                     if (err) {
