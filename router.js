@@ -16,9 +16,10 @@ router.get('/', (req, res) => {
 
 //create user
 router.post('/user', (req, res) => {
+        //let path = Upload(req.body.avatarUrl);
         var user = new User();
-        //user.avatarUrl.data = fs.readFileSync(req.files.userPhoto.path);
-        //user.avatarUrl.contentType = `image/png`;      
+        user.avatarUrl.data = req.body.avatarUrl
+        user.avatarUrl.contentType = `image/png`;      
         user.name = req.body.name;
         user.rank = req.body.rank;   
         user.gender = req.body.gender;
@@ -27,7 +28,9 @@ router.post('/user', (req, res) => {
         user.email = req.body.email;
         user.superior = req.body.superior;
         
-        console.log(user._id)
+        console.log("body content",req.body)
+        console.log("image content",req.body.avatarUrl)
+        console.log("name content",req.body.name)
         user.save(  (err) => {
             if (err) {
                 res.status(501).send(err);
@@ -284,6 +287,13 @@ const findValidSup = (unValid, traArray, res) => {
 			});
 	}
 }
+
+const Upload = multer({ dest: './upload',
+rename: function (fieldname, filename) {
+  return filename;
+},
+}).any();
+
 
 
 module.exports = router;
