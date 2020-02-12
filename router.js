@@ -67,7 +67,7 @@ router.get('/users', (req, res) => {
         console.log("request get all users");
     });
 // get all superior
-router.get('/usersup/:id', (req, res) => {
+router.get('/usersup/:id', (req, res) => {4
     const _id  = req.params.id
     console.log("id test", _id)
 	// when we add a new army
@@ -214,6 +214,7 @@ router.get('/users/:pageNo/',(req,res) => {
             User
                 .find({$or:[{name: regex}]},{},query)
                 .sort(req.query.sort)
+                .populate('superior')
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
                     if (err) {
@@ -234,6 +235,7 @@ router.get('/users/:pageNo/',(req,res) => {
             User
                 .find({},{},query)
                 //.sort(req.query.sort)
+                .populate('superior')
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
                     if (err) {
