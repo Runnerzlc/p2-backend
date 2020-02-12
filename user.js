@@ -9,7 +9,7 @@ const userSchema = new Schema({
     name : String,
     rank : String,
     gender : String,
-    startDate: String,
+    selectDate: String,
     phone : Number,
     email : String,
     superior : { type: Schema.Types.ObjectId, ref: 'User' },

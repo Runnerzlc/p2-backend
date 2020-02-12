@@ -23,7 +23,7 @@ router.post('/user', (req, res) => {
         user.name = req.body.name;
         user.rank = req.body.rank;   
         user.gender = req.body.gender;
-        user.startDate = req.body.startDate;
+        user.selectDate = req.body.selectDate;
         user.phone = req.body.phone;
         user.email = req.body.email;
         user.superior = req.body.superior;
@@ -71,7 +71,7 @@ router.get('/usersup/:id', (req, res) => {4
     const _id  = req.params.id
     console.log("id test", _id)
 	// when we add a new army
-	if (_id === '') {
+	if (_id == 0) {
 		User
 			.find()
 			.select('name')
@@ -106,7 +106,10 @@ router.get('/usersup/:id', (req, res) => {4
 });
 // get one user
 router.get('/user/:id', (req, res) => {
-        User.findById(req.params.id, (err, user) => {
+        User
+        .findById(req.params.id)
+        .populate('superior')
+        .exec ((err, user) => {
             if (err) {
                 res.send(err);
             }
@@ -126,7 +129,7 @@ router.put('/user/:id', (req, res) => {
             user.name = req.body.name;
             user.rank = req.body.rank;   
             user.gender = req.body.gender;
-            user.startDate = req.body.startDate;
+            user.selectDate = req.body.selectDate;
             user.phone = req.body.phone;
             user.email = req.body.email;
             User.findByIdAndUpdate( user.superior, { $pull: { subordinates: req.params.id}
