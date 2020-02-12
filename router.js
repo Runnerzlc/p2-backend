@@ -216,7 +216,7 @@ router.get('/users/:pageNo/',(req,res) => {
             }
             User
                 .find({$or:[{name: regex}]},{},query)
-                .sort(req.query.sort)
+                .sort(req.query.sort)//({ name: 1})
                 .populate('superior')
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
