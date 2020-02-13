@@ -200,6 +200,7 @@ router.get('/users/:pageNo/',(req,res) => {
     var size = 5;
     var query = {};
     var response = {};
+    console.log("pageNo:", req.params.pageNo)
     console.log("query:", req.query)
     if (req.query.search) {
         var regex = new RegExp(req.query.search)
@@ -208,8 +209,8 @@ router.get('/users/:pageNo/',(req,res) => {
             response = {"error" : true,"message" : "invalid page number, should start with 1"};
             return res.json(response)
     }
-    query.skip = size * (pageNo - 1)
-    query.limit = size
+    //query.skip = size * (pageNo - 1)
+    query.limit = size * pageNo //originally only size
     // Find some documents
     if (regex !== undefined) {
         User.countDocuments({$or:[{name: regex}]},function(err,totalCount) {
