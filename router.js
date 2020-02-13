@@ -199,6 +199,7 @@ router.get('/users/:pageNo/',(req,res) => {
     var size = 5;
     var query = {};
     var response = {};
+    console.log("query:", req.query)
     if (req.query.search) {
         var regex = new RegExp(req.query.search)
     };
@@ -216,7 +217,7 @@ router.get('/users/:pageNo/',(req,res) => {
             }
             User
                 .find({$or:[{name: regex}]},{},query)
-                .sort(req.query.sort)//({ name: 1})
+                .sort({ name: req.query.sort })
                 .populate('superior')
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
@@ -237,7 +238,7 @@ router.get('/users/:pageNo/',(req,res) => {
             }
             User
                 .find({},{},query)
-                //.sort(req.query.sort)
+                .sort({ name: req.query.sort })
                 .populate('superior')
                 .exec((err,data) => {
                 // Mongo command to fetch all data from collection.
