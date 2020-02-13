@@ -109,6 +109,7 @@ router.get('/user/:id', (req, res) => {
         User
         .findById(req.params.id)
         .populate('superior')
+        .populate('subordinates')
         .exec ((err, user) => {
             if (err) {
                 res.send(err);
