@@ -164,40 +164,30 @@ router.put('/user/:id', (req, res) => {
 //delete user
 router.delete('/user/:id', (req, res) => {
         //let id = req.params._id
-        User.findById(req.params.id, (err, user) => {
-            if (err) {
+        console.log("delet id", req.params.id)
+        User.findByIdAndDelete(req.params.id).exec((err, user) => {
+            if (err){
                 res.send(err);
             }
-            //user._id = req.params.id
             if (user.superior !== undefined){
-                User.findByIdAndUpdate(user.superior, { $pull: { subordinates: user._id }
-                },(err) => {
+                User
+                .findByIdAndUpdate(user.superior, { $pull: { subordinates: user._id }
+                }).exec((err) => {
                     if (err) {
                         res.status(501).send(err);
-                    }}
-                )
+                    }})
+                                  
             }
-        });
-        User.deleteOne({
-            _id: req.params.id, 
-        }, (err, user) => {
-            if (err) {
-                res.send(err);
-            }
-            // else{
-            //     res.json(user)
-            // }
-            //else is for test
             res.json({ message: 'Successfully deleted' });
-            
         });
+        
         console.log("request delete user")
     });
 
 
 router.get('/users/:pageNo/',(req,res) => {
     var pageNo = parseInt(req.params.pageNo)
-    var size = 5;
+    var size = 7;
     var query = {};
     var response = {};
     console.log("pageNo:", req.params.pageNo)
