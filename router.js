@@ -179,6 +179,7 @@ router.delete('/user/:id', (req, res) => {
                                   
             }
             res.json({ message: 'Successfully deleted' });
+            
         });
         
         console.log("request delete user")
